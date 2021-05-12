@@ -36,6 +36,7 @@ public class Jailbreak : MonoBehaviour {
     static int moduleIdCounter = 1;
     int moduleId;
     private bool moduleSolved;
+    private bool realSolve;
 
     void Awake () {
         moduleId = moduleIdCounter++;
@@ -199,6 +200,7 @@ public class Jailbreak : MonoBehaviour {
       GetComponent<KMBombModule>().HandlePass();
       Audio.PlaySoundAtTransform("DooDOodoodoodooDOoooooo", transform);
       moduleSolved = true;
+      realSolve = true;
     }
 
     #pragma warning disable 414
@@ -213,7 +215,6 @@ public class Jailbreak : MonoBehaviour {
       else if (command.Length < 4) {
         GetComponent<KMBombModule>().HandleStrike();
         Audio.PlaySoundAtTransform("DooDooDooDoo", transform);
-        yield break;
       }
       else {
         for (int i = 0; i < command.Length; i++)
@@ -234,30 +235,29 @@ public class Jailbreak : MonoBehaviour {
           }
           else {
             yield return "sendtochaterror Invalid Character!";
-            yield break;
-          }
+        }
       }
     }
 
-    IEnumerator TwitchHandleForcedSolve () {
-      while (!moduleSolved) {
-        string WhateverTheFuck = "";
-        int WhateverTheHell = 0;
-        WhateverTheFuck = AidsList.Phrases[UnityEngine.Random.Range(0, AidsList.Phrases.Count())];
-        if (Cock <= 3)
-          WhateverTheFuck = Yanked;
-        if (Cock <= 3)
-          WhateverTheFuck = Yanked;
-        for (int i = 0; i < 4; i++)
-          if (Aids[i].text != "_")
-            WhateverTheHell++;
-        if (WhateverTheHell >= 3)
-          WhateverTheFuck = Yanked;
-        for (int i = 0; i < 4; i++) {
-          Lomp[MyDickisSoLongitStretchesFromAtoZ.IndexOf(WhateverTheFuck[i].ToString().ToUpper())].OnInteract();
-          yield return new WaitForSecondsRealtime(.1f);
+    IEnumerator TwitchHandleForcedSolve() {
+      if (NuggetInABiscuit.Any()) {
+        var repeat = 4 - NuggetInABiscuit.Length;
+        for (var i = 0; i < repeat; i++) {
+          Lomp[0].OnInteract();
+          yield return new WaitForSeconds(.1f);
         }
+
         Lomp[26].OnInteract();
+        yield return new WaitForSeconds(.1f);
       }
+
+      for (var i = 0; i < 4; i++) {
+        Lomp[MyDickisSoLongitStretchesFromAtoZ.IndexOf(Yanked[i].ToString().ToUpperInvariant())].OnInteract();
+        yield return new WaitForSeconds(.1f);
+      }
+
+      Lomp[26].OnInteract();
+      while (!realSolve)
+        yield return true;
     }
 }
