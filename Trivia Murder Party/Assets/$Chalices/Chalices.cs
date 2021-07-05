@@ -601,7 +601,7 @@ public class Chalices : MonoBehaviour {
    IEnumerator ProcessTwitchCommand (string Command) {
       yield return null;
       Command = Command.Trim();
-      for (int i = 0; i < 8; i++) {
+      for (int i = 1; i < 9; i++) {
          if (Command == i.ToString()) {
             Buttons[i - 1].OnInteract();
             yield break;
