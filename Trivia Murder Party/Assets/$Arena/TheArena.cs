@@ -48,6 +48,7 @@ public class TheArena : MonoBehaviour {
    private int grbTimes = 0;
    private List<int> grbSorted = new List<int> { };
    private int grbPresses = 0;
+   private List<bool> grbPressed = new List<bool> { false, false, false, false, false, false, false, false, false };
 
    string TPModeClarifier = "";
    int TPStrikes;
@@ -856,9 +857,13 @@ public class TheArena : MonoBehaviour {
       GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
       for (int g = 0; g < 9; g++) {
          if (gbB == GrbButtons[g]) {
+            if (grbPressed[g]) {
+               return;
+            }
             if (grbSorted[8 - grbPresses] == grbFinal[g]) {
                Debug.LogFormat("[The Arena #{0}] You pressed {1} (the button that says \"{2}\"), this is correct.", moduleId, Pos(g), grbDisp[g]);
                grbPresses++;
+               grbPressed[g] = true;
                if (grbPresses == grbTimes) {
                   EventButtonObjects[2].SetActive(false);
                   GrbObjects.SetActive(false);
@@ -896,7 +901,7 @@ public class TheArena : MonoBehaviour {
    }
 
 #pragma warning disable 414
-   private readonly string TwitchHelpMessage = @"Use !{0} A/D/G to press Attack/Defend/Grab. Attack: Use !{0} cycle to view all weapons. Use !{0} <Weapon> to use that specific weapon. This is not chainable. Defend: Use !{0} Hit/Block/H/B to press that button, chain with single letters such as HDHDHDHD. Grab: Use !{0} ABC123 to hit that specific button. This is not chainable.";
+   private readonly string TwitchHelpMessage = @"Use !{0} A/D/G to press Attack/Defend/Grab. Attack: Use !{0} cycle to view all weapons. Use !{0} <Weapon> to use that specific weapon. This is not chainable. Defend: Use !{0} Hit/Block/H/B to press that button, chain with single letters such as HBHBHBHB. Grab: Use !{0} ABC123 to hit that specific button. This is not chainable.";
 #pragma warning restore 414
 
    IEnumerator ProcessTwitchCommand (string Command) {
@@ -987,6 +992,10 @@ public class TheArena : MonoBehaviour {
                default:
                   yield return "sendtochaterror I don't understand!";
                   break;
+            }
+            if (grbPressed[IndexOfTPButton]) {
+               yield return "sendtochaterror You already pressed that button!";
+               break;
             }
             GrbButtons[IndexOfTPButton].OnInteract();
             yield return new WaitForSecondsRealtime(.1f);
