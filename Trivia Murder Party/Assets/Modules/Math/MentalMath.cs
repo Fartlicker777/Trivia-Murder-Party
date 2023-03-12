@@ -180,6 +180,7 @@ public class MentalMath : MonoBehaviour {
       if (Activated) {
          Timer += Time.deltaTime;
          if ((Timer >= 30f && !TwitchPlaysActive) || (Timer >= 100f && TwitchPlaysActive)) {
+            Activated = false;
             StopAllCoroutines();
             MobilePartOfCrank.transform.localEulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
             StartCoroutine(Check());
@@ -194,7 +195,6 @@ public class MentalMath : MonoBehaviour {
       }
       OutOfText.text = QuestionsAnswered.ToString() + " out of " + Threshold.ToString();
       yield return new WaitForSeconds(5f);
-      Activated = false;
       if (QuestionsAnswered >= Threshold) {
          GetComponent<KMBombModule>().HandlePass();
          moduleSolved = true;
