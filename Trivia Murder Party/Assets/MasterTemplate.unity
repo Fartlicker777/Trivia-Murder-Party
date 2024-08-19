@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -706,7 +706,7 @@ Prefab:
     - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
       propertyPath: AudioClips.Array.size
-      value: 51
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 439642, guid: 8814ea52310d2614a9feda02ec355ae4, type: 2}
       propertyPath: m_LocalPosition.x
@@ -858,7 +858,7 @@ Prefab:
     - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
       propertyPath: TwitchPlaysActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
@@ -1015,6 +1015,11 @@ Prefab:
       propertyPath: AudioClips.Array.data[50]
       value: 
       objectReference: {fileID: 8300000, guid: 45f97bb4bd80a3e42b6c7be2e7eeaec8, type: 3}
+    - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
+        type: 2}
+      propertyPath: AudioClips.Array.data[51]
+      value: 
+      objectReference: {fileID: 8300000, guid: c52f7e1e3ee3f404e8cb35fe7d86bf96, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8814ea52310d2614a9feda02ec355ae4, type: 2}
   m_IsPrefabParent: 0

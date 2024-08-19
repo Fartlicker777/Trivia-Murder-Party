@@ -83,6 +83,9 @@ public class Jailbreak : MonoBehaviour {
       if (InputWord == "FUCK") {
          Audio.PlaySoundAtTransform("Fuck!", transform);
       }
+      if (InputWord == "ALEX") {
+         Audio.PlaySoundAtTransform("Alex", transform);
+      }
       for (int i = 0; i < 27; i++) {
          if (!IsActive) {
             StartCoroutine(AllTimerFunctions());
