@@ -42,6 +42,7 @@ public class Skewers : MonoBehaviour {
    bool willStrike;
    bool Animating;
    bool Ran;
+   bool autosolved;
 
    //Logging
    static int moduleIdCounter = 1;
@@ -87,8 +88,11 @@ public class Skewers : MonoBehaviour {
       if (Animating) {
          return;
       }
-      Calculate();
-      PermissibleGems();
+      if (!autosolved)
+      {
+         Calculate();
+         PermissibleGems();
+      }
       Animating = true;
       StartCoroutine(CloseOrOpen("close"));
       for (int i = 0; i < 16; i++) {
@@ -445,10 +449,12 @@ public class Skewers : MonoBehaviour {
    }
 
    IEnumerator TwitchHandleForcedSolve () {
+      autosolved = true;
       if (!Ran) {
          Module.OnHighlight();
          yield return new WaitForSeconds(2.5f);
       }
+      Calculate();
       PermissibleGems();
       Gems[ValidSpots[Random.Range(0, ValidSpots.Count())]].OnInteract();
       while (!moduleSolved) yield return true;
