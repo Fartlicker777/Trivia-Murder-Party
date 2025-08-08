@@ -218,7 +218,7 @@ public class phones : MonoBehaviour {
      {
         bomb.GetModuleNames().Count(x => tmpModules.Contains(x)),
         DateTime.Now.Hour,
-        bomb.GetModuleNames().Count(x => "1234567890".Any(xx => x.Contains(x))),
+        bomb.GetModuleNames().Count(i => "0123456789".Any(j => i.Contains(j))),
         bomb.GetTwoFactorCounts(),
         bomb.GetIndicators().Count(x => x == "NLL")
      };
