@@ -18,7 +18,7 @@ public class Jailbreak : MonoBehaviour {
 
    int Timer = 90;
 
-   string[] TPProtectedWords = new string[] { "HELP", "VIEW", "SHOW", "ZOOM", "TILT", "KEEP", "TAKE", "MINE" };
+   string[] TPProtectedWords = new string[] { "HELP", "VIEW", "SHOW", "ZOOM", "TILT", "KEEP", "TAKE", "MINE", "MARK" };
    string GoalWord = "";
    string InputWord = "";
    string QWERTYAlphabet = "QWERTYUIOPASDFGHJKLZXCVBNM.";
