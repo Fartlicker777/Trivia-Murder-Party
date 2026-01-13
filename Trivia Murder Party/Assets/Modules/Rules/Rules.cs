@@ -89,12 +89,12 @@ public class Rules : MonoBehaviour {
    }
 
    void StartPress () {
-      for (int i = 0; i < 4; i++) {
-         Options[i].font = Fonts[1];
-         Options[i].fontSize = 200;
-         Options[i].GetComponent<Renderer>().material = FontMats[1];
-      }
       if (!Activate) {
+         for (int i = 0; i < 4; i++) {
+            Options[i].font = Fonts[1];
+            Options[i].fontSize = 200;
+            Options[i].GetComponent<Renderer>().material = FontMats[1];
+         }
          Activate = true;
          if (Bomb.GetTime() <= 60 || InitialTimer == 0) {
             Threshhold = 1;
@@ -428,7 +428,6 @@ public class Rules : MonoBehaviour {
          Options[j].GetComponent<Renderer>().material = FontMats[0];
       }
       Timer = 0f;
-      Activate = false;
       for (int i = 0; i < 4; i++) {
          Options[i].text = "";
       }
@@ -442,8 +441,9 @@ public class Rules : MonoBehaviour {
       else {
          Counter = 0;
          Threshhold = 0;
+         Activate = false;
          GetComponent<KMBombModule>().HandleStrike();
-         Debug.LogFormat("[Rules #{0}] You followed {1} rules correctly out of the required minimum of {2}. Strike, Blan!", moduleId, Counter.ToString(), Threshhold.ToString());
+         Debug.LogFormat("[Rules #{0}] You followed {1} rules correctly out of the required minimum of {2}. Strike!", moduleId, Counter.ToString(), Threshhold.ToString());
          IntroTextGenerator();
       }
    }

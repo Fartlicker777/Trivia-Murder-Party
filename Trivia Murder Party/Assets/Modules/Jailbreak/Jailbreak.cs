@@ -308,7 +308,7 @@ public class Jailbreak : MonoBehaviour {
          Buttons[26].OnInteract();
       }
 
-      /*if (InputWord.Length > 0) Kill yourself exish
+      /*if (InputWord.Length > 0) ..exish
       {
          for (int i = InputWord.Length; i < 4; i++)
          {
