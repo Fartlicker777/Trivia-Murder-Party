@@ -32,7 +32,7 @@ public class dumbWaiters : MonoBehaviour {
    private static readonly string[] names = new string[24] { "TasThiluna", "Deaf", "Blananas2", "Fish", "Usernam3", "EpicToast", "Makebao", "KavinKul", "Crazycaleb", "tandyCake", "Fang", "Vinco", "Arceus", "Xmaster", "FredV", "Kaito", "SillyPuppy", "Edan", "Mythers", "Procyon", "eXish", "RedPenguin", "MCD573", "Mr. Peanut" };
    private static readonly int[] parenthesesNumbers = new int[24] { 17, 24, 6, 9, 15, 7, 22, 19, 8, 11, 3, 21, 18, 20, 16, 14, 4, 13, 2, 10, 12, 1, 5, 23 };
    private static readonly int[] startsWithVowel = new int[5] { 4, 5, 12, 17, 20 };
-   private static readonly int[] containsNumber = new int[3] { 4, 9, 22 };
+   private static readonly int[] containsNumber = new int[2] { 4, 22 };
    private bool animating = true;
 
    private static int moduleIdCounter = 1;
