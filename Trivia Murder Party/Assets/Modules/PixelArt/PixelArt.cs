@@ -303,7 +303,7 @@ public class PixelArt : MonoBehaviour {
    }
 
 #pragma warning disable 414
-   private readonly string TwitchHelpMessage = @"Use !{0} start to start. Use !{0} toggle A1 to toggle the corresponding square. Letters are columns and numbers are rows. Use !{0} submit to submit.";
+   private readonly string TwitchHelpMessage = @"Use !{0} start to start. Use !{0} toggle A1 to toggle the corresponding square. Letters are columns and numbers are rows. The top of the E column is E2. Use !{0} submit to submit.";
 #pragma warning restore 414
 
    IEnumerator ProcessTwitchCommand (string Command) {
@@ -351,6 +351,10 @@ public class PixelArt : MonoBehaviour {
             else if (Parameters[i][0].ToString().ToLower() == "c") { Index += 3; }
             else if (Parameters[i][0].ToString().ToLower() == "d") { Index += 4; }
             else if (Parameters[i][0].ToString().ToLower() == "e") { Index += 5; }
+            else {
+               yield return "sendtochaterror Invalid command!";
+               yield break;
+            }
             Index--;
             Buttons[Index].OnInteract();
             Index &= 0;
