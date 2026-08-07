@@ -379,6 +379,10 @@ Prefab:
       propertyPath: m_Name
       value: Pixel Art
       objectReference: {fileID: 0}
+    - target: {fileID: 1676409040304040, guid: a4dd6e07932cef046860719256308dfc, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a4dd6e07932cef046860719256308dfc, type: 2}
   m_IsPrefabParent: 0
@@ -510,10 +514,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 12
       objectReference: {fileID: 0}
-    - target: {fileID: 1676409040304040, guid: 1f81f9decf7bd054e90513961e9f1401, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1f81f9decf7bd054e90513961e9f1401, type: 2}
   m_IsPrefabParent: 0
@@ -608,7 +608,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1414543157635674, guid: 9438a262691311c46a3f1ad17c92bbc1, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9438a262691311c46a3f1ad17c92bbc1, type: 2}

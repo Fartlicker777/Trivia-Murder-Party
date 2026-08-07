@@ -35,6 +35,7 @@ public class Skewers : MonoBehaviour {
    int tempFifthSN;
 
    string[] ColorNamesForLog = { "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"};
+   string[] ordinals = { "first", "second", "third", "fourth", "fifth" };
 
    bool Red; //Need to declare these here for some reason.
    bool Green;
@@ -79,8 +80,6 @@ public class Skewers : MonoBehaviour {
       for (int i = 0; i < 25; i++) {
          Top.transform.Rotate(3.6f, 0, 0);
       }
-      SwordPositions[0] = Bomb.GetSerialNumberNumbers().Last();
-      SwordPositions[0] = StabSpots[Modulo(Array.IndexOf(StabSpots, SwordPositions[0]) - Bomb.GetSerialNumberNumbers().First(), 16)];
       Generate();
    }
 
@@ -90,14 +89,13 @@ public class Skewers : MonoBehaviour {
       }
       if (!autosolved)
       {
-         Calculate();
          PermissibleGems();
       }
       Animating = true;
       StartCoroutine(CloseOrOpen("close"));
       for (int i = 0; i < 16; i++) {
          if (Gem == Gems[i]) {
-            Debug.LogFormat("[Skewers #{0}] You submitted {1} at {2} solves.", moduleId, "ABCD"[i % 4].ToString() + "1234"[i / 4].ToString(), Bomb.GetSolvedModuleNames().Count());
+            Debug.LogFormat("[Skewers #{0}] You submitted {1}.", moduleId, "ABCD"[i % 4].ToString() + "1234"[i / 4].ToString());
             if (ValidSpots.Contains(i)) {
                willStrike = false;
                //GetComponent<KMBombModule>().HandlePass();
@@ -132,12 +130,107 @@ public class Skewers : MonoBehaviour {
          
       }
 
+      SwordPositions[0] = StabSpots[Modulo(Array.IndexOf(StabSpots, Bomb.GetSerialNumberNumbers().Last()) - Bomb.GetSerialNumberNumbers().First(), 16)];
+
+      int temp = ((VMR.GetVoltageMeterInt() == -1 ? 0 : VMR.GetVoltageMeterInt()) + Bomb.GetBatteryCount() + Bomb.GetIndicators().Count()) % 16;
+      SwordPositions[1] = temp;
+      if (SwordPositions[1] == SwordPositions[0]) {
+         SwordPositions[1] = StabSpots[Modulo(Array.IndexOf(StabSpots, SwordPositions[1]) + 1, 16)];
+      }
+      else {
+         SwordPositions[1] = temp;
+      }
+
+      int tempSameAmount = 0;
+      temp = 0; //Reuse a temp variable
+      for (int i = 0; i < 16; i++) {
+         temp = GemColors[i];
+         if (temp >= 4) {
+            temp -= 4;
+            Blue = true;
+         }
+         if (temp >= 2) {
+            temp -= 2;
+            Green = true;
+         }
+         if (temp >= 1) {
+            temp--;
+            Red = true;
+         }
+         switch (DefaultRGBGems[i]) {
+            case 1:
+               if (Red) {
+                  tempSameAmount++;
+               }
+               break;
+            case 2:
+               if (Green) {
+                  tempSameAmount++;
+               }
+               break;
+            case 4:
+               if (Blue) {
+                  tempSameAmount++;
+               }
+               break;
+         }
+         Red = false;
+         Green = false;
+         Blue = false;
+      }
+      SwordPositions[2] = tempSameAmount;
+      while (SwordPositions[2] == SwordPositions[0] || SwordPositions[2] == SwordPositions[1]) {
+         SwordPositions[2] = StabSpots[Modulo(Array.IndexOf(StabSpots, SwordPositions[2]) + 1, 16)];
+      }
+
+      int differentColors = 16;
+      for (int i = 0; i < 16; i++) {
+         if (GemColors[i] == DefaultRGBGems[i]) {
+            differentColors--;
+         }
+      }
+      SwordPositions[3] = Modulo(differentColors, 16);
+      while (SwordPositions[3] == SwordPositions[0] || SwordPositions[3] == SwordPositions[1] || SwordPositions[3] == SwordPositions[2]) {
+         SwordPositions[3] = StabSpots[Modulo(Array.IndexOf(StabSpots, SwordPositions[3]) + 1, 16)];
+      }
+
+      //                 012345678901234567890123456
+      string alphabet = ".ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      string fourthSN = Bomb.GetSerialNumber()[3].ToString();
+      string fifthSN = Bomb.GetSerialNumber()[4].ToString();
+
+      for (int i = 1; i < 27; i++) {
+         if (alphabet[i].ToString() == fifthSN) {
+            tempFifthSN = i;
+         }
+      }
+      for (int i = 1; i < 27; i++) {
+         if (alphabet[i].ToString() == fourthSN) {
+            temp = i;
+            while (temp >= 7) {
+               temp -= 6;
+            }
+            break;
+         }
+      }
+      //Debug.Log(tempFifthSN);
+      //Debug.Log(temp);
+      temp += 9;
+      temp = StabSpots[Modulo(Array.IndexOf(StabSpots, temp) - (tempFifthSN + 9), 16)];
+      SwordPositions[4] = temp;
+      while (SwordPositions[4] == SwordPositions[0] || SwordPositions[4] == SwordPositions[1] || SwordPositions[4] == SwordPositions[2] || SwordPositions[4] == SwordPositions[3]) {
+         SwordPositions[4] = StabSpots[Modulo(Array.IndexOf(StabSpots, SwordPositions[4]) + 1, 16)];
+      }
+
       Debug.LogFormat("[Skewers #{0}] The colors are:", moduleId);
       Debug.LogFormat("[Skewers #{0}] {1} {2} {3} {4}", moduleId, ColorNamesForLog[GemColors[0]], ColorNamesForLog[GemColors[1]], ColorNamesForLog[GemColors[2]], ColorNamesForLog[GemColors[3]]);
       Debug.LogFormat("[Skewers #{0}] {1} {2} {3} {4}", moduleId, ColorNamesForLog[GemColors[4]], ColorNamesForLog[GemColors[5]], ColorNamesForLog[GemColors[6]], ColorNamesForLog[GemColors[7]]);
       Debug.LogFormat("[Skewers #{0}] {1} {2} {3} {4}", moduleId, ColorNamesForLog[GemColors[8]], ColorNamesForLog[GemColors[9]], ColorNamesForLog[GemColors[10]], ColorNamesForLog[GemColors[11]]);
       Debug.LogFormat("[Skewers #{0}] {1} {2} {3} {4}", moduleId, ColorNamesForLog[GemColors[12]], ColorNamesForLog[GemColors[13]], ColorNamesForLog[GemColors[14]], ColorNamesForLog[GemColors[15]]);
-      Debug.LogFormat("[Skewers #{0}] The first sword will be always be at position {1}.", moduleId, "0123456789ABCDEF"[SwordPositions[0]]);
+      
+      for (int sw = 0; sw < 5; sw++) {
+         Debug.LogFormat("[Skewers #{0}] The {1} sword is at position {2}.", moduleId, ordinals[sw], "0123456789ABCDEF"[SwordPositions[sw]]);  
+      }
    }
 
    IEnumerator CloseOrOpen (string type) {
@@ -225,97 +318,6 @@ public class Skewers : MonoBehaviour {
       }
       yield return new WaitForSeconds(.2f);
       StartCoroutine(CloseOrOpen("open"));
-   }
-
-   void Calculate () {
-      
-      int temp = ((VMR.GetVoltageMeterInt() == -1 ? 0 : VMR.GetVoltageMeterInt()) + Bomb.GetBatteryCount() + Bomb.GetIndicators().Count()) % 16;
-      SwordPositions[1] = temp;
-      if (SwordPositions[1] == SwordPositions[0]) {
-         SwordPositions[1] = StabSpots[Modulo(Array.IndexOf(StabSpots, SwordPositions[1]) + 1, 16)];
-      }
-      else {
-         SwordPositions[1] = temp;
-      }
-      int tempSameAmount = 0;
-      temp = 0; //Reuse a temp variable
-      for (int i = 0; i < 16; i++) {
-         temp = GemColors[i];
-         if (temp >= 4) {
-            temp -= 4;
-            Blue = true;
-         }
-         if (temp >= 2) {
-            temp -= 2;
-            Green = true;
-         }
-         if (temp >= 1) {
-            temp--;
-            Red = true;
-         }
-         switch (DefaultRGBGems[i]) {
-            case 1:
-               if (Red) {
-                  tempSameAmount++;
-               }
-               break;
-            case 2:
-               if (Green) {
-                  tempSameAmount++;
-               }
-               break;
-            case 4:
-               if (Blue) {
-                  tempSameAmount++;
-               }
-               break;
-         }
-         Red = false;
-         Green = false;
-         Blue = false;
-      }
-      SwordPositions[2] = tempSameAmount;
-      while (SwordPositions[2] == SwordPositions[0] || SwordPositions[2] == SwordPositions[1]) {
-         SwordPositions[2] = StabSpots[Modulo(Array.IndexOf(StabSpots, SwordPositions[2]) + 1, 16)];
-      }
-      int differentColors = 16;
-      for (int i = 0; i < 16; i++) {
-         if (GemColors[i] == DefaultRGBGems[i]) {
-            differentColors--;
-         }
-      }
-      SwordPositions[3] = Modulo(differentColors, 16);
-      while (SwordPositions[3] == SwordPositions[0] || SwordPositions[3] == SwordPositions[1] || SwordPositions[3] == SwordPositions[2]) {
-         SwordPositions[3] = StabSpots[Modulo(Array.IndexOf(StabSpots, SwordPositions[3]) + 1, 16)];
-      }
-      //                 012345678901234567890123456
-      string alphabet = ".ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      string fourthSN = Bomb.GetSerialNumber()[3].ToString();
-      string fifthSN = Bomb.GetSerialNumber()[4].ToString();
-
-      for (int i = 1; i < 27; i++) {
-         if (alphabet[i].ToString() == fifthSN) {
-            tempFifthSN = i;
-         }
-      }
-      for (int i = 1; i < 27; i++) {
-         if (alphabet[i].ToString() == fourthSN) {
-            temp = i;
-            while (temp >= 7) {
-               temp -= 6;
-            }
-            break;
-         }
-      }
-      //Debug.Log(tempFifthSN);
-      //Debug.Log(temp);
-      temp += 9;
-      temp = StabSpots[Modulo(Array.IndexOf(StabSpots, temp) - (tempFifthSN + 9), 16)];
-      SwordPositions[4] = temp;
-      while (SwordPositions[4] == SwordPositions[0] || SwordPositions[4] == SwordPositions[1] || SwordPositions[4] == SwordPositions[2] || SwordPositions[4] == SwordPositions[3]) {
-         SwordPositions[4] = StabSpots[Modulo(Array.IndexOf(StabSpots, SwordPositions[4]) + 1, 16)];
-      }
-      Debug.LogFormat("[Skewers #{0}] The swords will be at: {1}{2}{3}{4}", moduleId, "0123456789ABCDEF"[SwordPositions[1]], "0123456789ABCDEF"[SwordPositions[2]], "0123456789ABCDEF"[SwordPositions[3]], "0123456789ABCDEF"[SwordPositions[4]]);
    }
 
    void PermissibleGems () {
@@ -454,7 +456,6 @@ public class Skewers : MonoBehaviour {
          Module.OnHighlight();
          yield return new WaitForSeconds(2.5f);
       }
-      Calculate();
       PermissibleGems();
       Gems[ValidSpots[Random.Range(0, ValidSpots.Count())]].OnInteract();
       while (!moduleSolved) yield return true;
